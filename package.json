@@ -4,7 +4,8 @@
   "description": "Fuzzing solidity contracts",
   "main": "index.js",
   "scripts": {
-    "start-testrpc": ". ./EVM/start_testrpc.sh"
+    "start-testrpc": ". ./EVM/start_testrpc.sh",
+    "deploy": "babel-node ./EVM/deploy --presets es2015,stage-0"
   },
   "keywords": [
     "solidity",
