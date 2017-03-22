@@ -1,3 +1,8 @@
- import Promise from 'bluebird';
+import Promise from 'bluebird';
+import Eth from 'ethjs';
+import fs from 'fs';
 
-console.log('testing babel transpiler...')
+Promise.delay(0)
+.then(() => {
+    console.log('reading contracts directory');
+})

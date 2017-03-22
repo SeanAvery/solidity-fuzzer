@@ -3,13 +3,15 @@ import Eth from 'ethjs';
 
 const fs = Promise.promisifyAll(require('fs'));
 
+export let sources = [];
+
 export function compile() {
   return new Promise((resolve, reject) => {
     Promise.resolve(getContractFiles())
     .map((file) => {
       getContracts(file);
     }).then(() => {
-      
+
     })
   })
 }
@@ -25,17 +27,19 @@ export function getContractFiles() {
       resolve(files);
     }).catch((error) => {
       reject(error);
-    })
-  })
+    });
+  });
 }
 
 export function getContracts(file) {
   return new Promise((resolve, reject) => {
-    fs.readFileAsync(`${process.cwd()}/contracts/${file}`, 'utf8')
+    fs.readFileAsync(`${process.cwd()}/EVM/contracts/${file}`, 'utf8')
     .then((data) => {
-      console.log('data', data);
-    })
-  })
+      resolve(data);
+    .catch((error) => {
+      reject(error);
+    });
+  });
 }
 
 compile();
