@@ -1,6 +1,8 @@
 import Promise from 'bluebird';
 import Eth from 'ethjs';
-import fs from 'fs';
+
+const fs = Promise.promisifyAll(require('fs'));
+const jsonfile = Promise.promisifyAll(require('jsonfile'));
 
 let HttpProvider;
 let eth;
@@ -9,7 +11,7 @@ export function deploy() {
   return new Promise((resolve, reject) => {
     Promise.resolve(web3Provider())
     .then(() => {
-
+      getCompiled();
     }).catch((error) => {
       reject(error);
     });
@@ -21,10 +23,22 @@ export function web3Provider() {
     Promise.delay(0)
     .then(() => {
       eth = new Eth(new Eth.HttpProvider('http://localhost:8545'));
-      console.log('eth', eth);
+      resolve(true);
     }).catch((error) => {
       reject(error);
     })
+  });
+}
+
+export function getCompiled() {
+  return new Promise((resolve, reject) => {
+    jsonfile.readFileAsync(`${process.cwd()}/EVM/compiled/compiled.json`)
+    .then((data) => {
+      console.log('data', data);
+      resolve(true);
+    }).catch((error) => {
+      reject(error);
+    });
   });
 }
 
