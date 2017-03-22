@@ -4,5 +4,22 @@ import fs from 'fs';
 
 Promise.delay(0)
 .then(() => {
-    console.log('reading contracts directory');
+  return getContractFiles();
+}).map((file) => {
+  console.log('file');
+}).catch((error) => {
+  console.log(error);
 })
+
+// utility functions
+
+function getContractFiles() {
+  return new Promise((resolve, reject) => {
+    let files = [];
+    fs.readdir('./contracts')
+    .map((file) => {
+      console.log(file);
+      files.push(file)
+    })
+  })
+}
