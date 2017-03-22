@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "start-testrpc": ". ./EVM/start_testrpc.sh",
-    "deploy": "babel-node ./EVM/deploy --presets es2015,stage-0"
+    "deploy": "babel-node ./EVM/deploy --presets es2015,stage-0",
+    "compile": "babel-node ./EVM/compile --presets es2015,stage-0"
   },
   "keywords": [
     "solidity",
