@@ -4,7 +4,9 @@ import solc from 'solc';
 
 const fs = Promise.promisifyAll(require('fs'));
 
-export let sources = [];
+// export let sources = [];
+
+export let sources = new Object();
 
 export function compile() {
   return new Promise((resolve, reject) => {
@@ -38,9 +40,7 @@ export function getContractData(file) {
   return new Promise((resolve, reject) => {
     fs.readFileAsync(`${process.cwd()}/EVM/contracts/${file}`, 'utf8')
     .then((data) => {
-      // console.log('data', data);
-      sources.push(data.toString());
-      // console.log('sources 1 ', sources)
+      sources[file] = data.toString();
       resolve(data);
     }).catch((error) => {
       reject(error);
@@ -49,9 +49,11 @@ export function getContractData(file) {
 }
 
 export function solcCompile() {
-  console.log('sources', sources)
-  sources.forEach((code) => {
-    console.log('code');
+  return new Promise((resolve, reject) => {
+    Promise.resolve(solc.compile({sources: sources}, 1))
+    .then((compiled) => {
+      console.log('compiled', compiled);
+    })
   })
 
 }
