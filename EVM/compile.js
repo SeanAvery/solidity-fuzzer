@@ -3,18 +3,22 @@ import Eth from 'ethjs';
 import solc from 'solc';
 
 const fs = Promise.promisifyAll(require('fs'));
-
-// export let sources = [];
+const jsonfile = Promise.promisifyAll(require('jsonfile'));
 
 export let sources = new Object();
+export let compiled;
 
 export function compile() {
   return new Promise((resolve, reject) => {
     Promise.resolve(getContractFiles())
     .map((file) => {
-       return getContractData(file);
+      return getContractData(file);
     }).then(() => {
-      solcCompile();
+      return solcCompile();
+    }).then(() => {
+      return writeCompiledFile();
+    }).then(() => {
+
     }).catch((error) => {
       reject(error);
     })
@@ -51,11 +55,25 @@ export function getContractData(file) {
 export function solcCompile() {
   return new Promise((resolve, reject) => {
     Promise.resolve(solc.compile({sources: sources}, 1))
-    .then((compiled) => {
-      console.log('compiled', compiled);
-    })
-  })
+    .then((data) => {
+      compiled = data;
+      resolve(compiled);
+    }).catch((error) => {
+      reject(error);
+    });
+  });
+}
 
+export function writeCompiledFile() {
+  return new Promise((resolve, reject) => {
+      Promise.resolve(jsonfile.writeFileAsync(`${process.cwd()}/EVM/compiled/compiled.json`, compiled))
+      .then(() => {
+        console.log('Compiled output saved in compiled.json');
+        resolve(true);
+      }).catch((error) => {
+        reject(error);
+      });
+  })
 }
 
 compile();
