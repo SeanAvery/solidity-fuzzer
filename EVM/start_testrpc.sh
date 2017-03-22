@@ -7,6 +7,6 @@ ether="1000000000000000000000"
 
 testrpc --gasLimit "0x989680" \
         --port "8545" \
-        --account="${account1}, ${ether}" \ 
+        --account="${account1}, ${ether}" \
         --account="${account2}, ${ether}" \
         --account="${account3}, ${ether}" \
